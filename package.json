@@ -1,0 +1,22 @@
+{
+  "name": "harmonia-server",
+  "version": "1.0.0",
+  "description": "server for harmonia app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "anastago",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.1.1",
+    "morgan": "^1.10.0",
+    "openai": "^4.27.0"
+  }
+}
