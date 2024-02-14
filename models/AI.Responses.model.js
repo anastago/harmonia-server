@@ -11,10 +11,6 @@ const aiResponseSchema = new Schema({
   updatedAt: {
     type: Date,
   },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
   note: {
     type: Schema.Types.ObjectId,
     ref: "Note",
