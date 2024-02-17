@@ -13,7 +13,7 @@ async function analyzeResponseAI(noteText) {
         {
           role: "system",
           content:
-            "Analyze the thoughts and based on Cognitive Behavioral Therapy principles find cognitive biases and inspire to overcome them.",
+            "Analyze the input text to identify any negative cognitive biases based on Cognitive Behavioral Therapy principles. Provide guidance and inspiration to overcome these biases. If the input contains only positive sentiments, offer positive and motivational feedback.",
         },
         {
           role: "user",
@@ -33,7 +33,6 @@ async function createAIResponseForNoteId(noteId, noteText) {
   try {
     const text = await analyzeResponseAI(noteText)
     const aiResponse = await AIResponse.create({ note: noteId, text: text })
-    // Optionally, you can perform any additional processing here
     return aiResponse
   } catch (error) {
     throw error
@@ -43,7 +42,6 @@ async function createAIResponseForNoteId(noteId, noteText) {
 async function deleteAIResponseForNoteId(noteId) {
   try {
     await AIResponse.findOneAndDelete({ note: noteId })
-    // Optionally, you can perform any additional processing here
     return
   } catch (error) {
     throw error
