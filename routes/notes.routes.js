@@ -1,10 +1,10 @@
 const router = require("express").Router()
 const Note = require("../models/Notes.model")
-const requireAuth = require("../config/middleware/requireAuth")
+const requireAuth = require("../middleware/requireAuth")
 const {
   createAIResponseForNoteId,
   deleteAIResponseForNoteId,
-} = require("../analyzeService")
+} = require("../analyzeService.js")
 
 router.post("/", requireAuth, async (req, res, next) => {
   try {

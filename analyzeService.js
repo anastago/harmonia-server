@@ -1,8 +1,8 @@
-import OpenAI from "openai"
+const OpenAI = require("openai")
 const AIResponse = require("./models/AIResponses.model")
 
 const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY,
   dangerouslyAllowBrowser: true,
 })
 
@@ -51,6 +51,7 @@ async function deleteAIResponseForNoteId(noteId) {
 }
 
 module.exports = {
+  analyzeResponseAI,
   createAIResponseForNoteId,
   deleteAIResponseForNoteId,
 }
