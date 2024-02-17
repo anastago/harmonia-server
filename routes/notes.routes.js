@@ -1,11 +1,18 @@
 const router = require("express").Router()
 const Note = require("../models/Notes.model")
 const requireAuth = require("../middleware/requireAuth")
+const {
+  createAIResponseForNoteId,
+  deleteAIResponseForNoteId,
+} = require("../analyzeService")
 
 router.post("/", requireAuth, async (req, res, next) => {
   try {
     const { text } = req.body
     const createdNote = await Note.create({ text, user: req.user._id })
+
+    await createAIResponseForNoteId(createdNote._id, createdNote.text)
+
     res.status(201).json({ message: "Note created", data: createdNote })
   } catch (err) {
     next(err)
@@ -36,7 +43,8 @@ router.get("/:noteId", async (req, res, next) => {
 })
 
 router.put("/:noteId", async (req, res, next) => {
-  const noteId = req.params.noteId
+  // const noteId = req.params.noteId
+  const { noteId } = req.params
   const { text } = req.body
   try {
     const updatedNote = await Note.findByIdAndUpdate(
@@ -44,6 +52,11 @@ router.put("/:noteId", async (req, res, next) => {
       { text },
       { new: true }
     ).populate("user", { _id: 0, email: 1 })
+
+    await deleteAIResponseForNoteId(noteId)
+
+    await createAIResponseForNoteId(noteId, updatedNote.text)
+
     res
       .status(200)
       .json({ message: "Note successfully updated", data: updatedNote })
@@ -56,6 +69,7 @@ router.delete("/:noteId", async (req, res, next) => {
   const noteId = req.params.noteId
   try {
     const deletedNote = await Note.findByIdAndDelete(noteId)
+    await deleteAIResponseForNoteId(noteId)
     res.status(200).json({ message: "Note is deleted", data: deletedNote })
   } catch (err) {
     next(err)

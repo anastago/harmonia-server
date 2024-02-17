@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken")
 const requireAuth = require("../middleware/requireAuth")
 const bcrypt = require("bcrypt")
 
-router.post("/", async (req, res, next) => {
+router.post("/", requireAuth, async (req, res, next) => {
   try {
     const { email, password } = req.body
     const salt = bcrypt.genSaltSync()

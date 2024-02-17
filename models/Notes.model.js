@@ -15,6 +15,10 @@ const noteSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  aiResponse: {
+    type: Schema.Types.ObjectId,
+    ref: "AIResponse",
+  },
 })
 
 const Note = model("Note", noteSchema)
