@@ -1,6 +1,6 @@
 const router = require("express").Router()
 const Note = require("../models/Notes.model")
-const requireAuth = require("../middleware/requireAuth")
+const requireAuth = require("../config/middleware/requireAuth")
 const {
   createAIResponseForNoteId,
   deleteAIResponseForNoteId,
