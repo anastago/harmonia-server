@@ -2,19 +2,19 @@ const router = require("express").Router()
 const jwt = require("jsonwebtoken")
 const requireAuth = require("../middleware/requireAuth")
 const bcrypt = require("bcrypt")
+const User = require("../models/Users.model")
 
-router.post("/", requireAuth, async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     const { email, password } = req.body
     const salt = bcrypt.genSaltSync()
     const hashedPassword = bcrypt.hashSync(password, salt)
     const createdUser = await User.create({ email, password: hashedPassword })
-    res.status(201).json({ message: "User created", data: createdUser })
 
     const token = jwt.sign(
       { userId: createdUser._id, email: createdUser.email },
       process.env.SECRET_KEY,
-      { expiresIn: "1h" }
+      { expiresIn: "10h" }
     )
     res.status(201).json({ message: "User created", token: token })
   } catch (err) {
@@ -84,7 +84,7 @@ router.post("/signin", async (req, res, next) => {
     const token = jwt.sign(
       { userId: user._id, email: user.email },
       process.env.SECRET_KEY,
-      { expiresIn: "1h" }
+      { expiresIn: "10h" }
     )
 
     res.status(201).json({ message: "User signed in", token: token })
