@@ -12,15 +12,26 @@ const requireAuth = (req, res, next) => {
 
   jwt.verify(token, process.env.SECRET_KEY, async (err, payload) => {
     if (err) {
-      console.log(err);
+      console.log(err)
       res.status(401).json({ error: "You must be logged in." })
     }
+    if (!payload || !payload.userId) {
+      return res.status(401).json({ error: "Invalid token." })
+    }
+
     console.log(payload)
     const { userId } = payload
-    const user = await User.findById(userId)
-    req.user = user
-
-    next()
+    try {
+      const user = await User.findById(userId)
+      if (!user) {
+        return res.status(401).json({ error: "User not found." })
+      }
+      req.user = user
+      next()
+    } catch (error) {
+      console.error("Error finding user:", error)
+      return res.status(500).json({ error: "Internal server error." })
+    }
   })
 }
 
