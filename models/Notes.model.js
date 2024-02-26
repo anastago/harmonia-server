@@ -6,11 +6,10 @@ const noteSchema = new Schema({
   },
   createdAt: {
     type: Date,
+    default: Date.now,
     immutable: true,
   },
-  updatedAt: {
-    type: Date,
-  },
+
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",
