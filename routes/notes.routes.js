@@ -27,9 +27,22 @@ router.post("/", requireAuth, async (req, res, next) => {
 router.get("/", requireAuth, async (req, res, next) => {
   try {
     const notes = await Note.find({ user: req.user._id })
-      .select({ text: 1 })
+      .select({ text: 1, createdAt: 1 })
       .populate("user", { _id: 0, email: 1 })
     res.status(200).json({ message: "All notes successfully found", notes })
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.get("/owner", requireAuth, async (req, res, next) => {
+  const userId = req.user._id
+  try {
+    const notes = await Note.find({ user: userId })
+      .select({ text: 1, createdAt: 1 })
+      .populate("user")
+
+    res.status(201).json({ message: "Notes found by userId", notes: notes })
   } catch (error) {
     next(error)
   }
@@ -39,7 +52,7 @@ router.get("/:noteId", requireAuth, async (req, res, next) => {
   const noteId = req.params.noteId
   try {
     const note = await Note.findById(noteId)
-      .select({ text: 1 })
+      .select({ text: 1, createdAt: 1 })
       .populate("user", { _id: 0, email: 1 })
     res.status(200).json({ message: "Note found by ID", data: note })
   } catch (error) {
@@ -55,7 +68,8 @@ router.put("/:noteId", requireAuth, async (req, res, next) => {
     const updatedNote = await Note.findByIdAndUpdate(
       noteId,
       { text },
-      { new: true }
+      { new: true },
+      { createdAt: Date.now() }
     ).populate("user", { _id: 0, email: 1 })
 
     await deleteAIResponseForNoteId(noteId)
