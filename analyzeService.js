@@ -1,5 +1,4 @@
 const OpenAI = require("openai")
-const AIResponse = require("./models/AIResponses.model")
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -29,27 +28,6 @@ async function analyzeResponseAI(noteText) {
   }
 }
 
-async function createAIResponseForNoteId(noteId, noteText) {
-  try {
-    const text = await analyzeResponseAI(noteText)
-    const aiResponse = await AIResponse.create({ note: noteId, text: text })
-    return aiResponse
-  } catch (error) {
-    throw error
-  }
-}
-
-async function deleteAIResponseForNoteId(noteId) {
-  try {
-    await AIResponse.findOneAndDelete({ note: noteId })
-    return
-  } catch (error) {
-    throw error
-  }
-}
-
 module.exports = {
   analyzeResponseAI,
-  createAIResponseForNoteId,
-  deleteAIResponseForNoteId,
 }

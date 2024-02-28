@@ -64,7 +64,6 @@ router.put("/:noteId", requireAuth, async (req, res, next) => {
     res.status(200).json({
       message: "Note successfully updated",
       data: updatedNote,
-      updatedAIResponse,
     })
   } catch (error) {
     next(error)
