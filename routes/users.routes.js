@@ -18,6 +18,7 @@ router.post("/", async (req, res, next) => {
     )
     res.status(201).json({ message: "User created", token: token })
   } catch (err) {
+    console.log(err)
     next(err)
   }
 })

@@ -1,24 +1,13 @@
 const router = require("express").Router()
 const Note = require("../models/Notes.model")
 const requireAuth = require("../middleware/requireAuth")
-const {
-  createAIResponseForNoteId,
-  deleteAIResponseForNoteId,
-} = require("../analyzeService.js")
 
 router.post("/", requireAuth, async (req, res, next) => {
   try {
     const { text } = req.body
     const createdNote = await Note.create({ text, user: req.user._id })
 
-    const createdAIResponse = await createAIResponseForNoteId(
-      createdNote._id,
-      createdNote.text
-    )
-
-    res
-      .status(201)
-      .json({ message: "Note created", data: createdNote, createdAIResponse })
+    res.status(201).json({ message: "Note created", data: createdNote })
   } catch (err) {
     next(err)
   }
