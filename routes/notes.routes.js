@@ -61,13 +61,6 @@ router.put("/:noteId", requireAuth, async (req, res, next) => {
       { createdAt: Date.now() }
     ).populate("user", { _id: 0, email: 1 })
 
-    await deleteAIResponseForNoteId(noteId)
-
-    const updatedAIResponse = await createAIResponseForNoteId(
-      noteId,
-      updatedNote.text
-    )
-
     res.status(200).json({
       message: "Note successfully updated",
       data: updatedNote,
@@ -83,7 +76,7 @@ router.delete("/:noteId", requireAuth, async (req, res, next) => {
   try {
     const deletedNote = await Note.findByIdAndDelete(noteId)
     await deleteAIResponseForNoteId(noteId)
-    res.status(200).json({ message: "Note is deleted", data: deletedNote })
+    res.status(200).json({ message: "Note deleted", data: deletedNote })
   } catch (err) {
     next(err)
   }
