@@ -30,6 +30,7 @@ router.get("/owner", requireAuth, async (req, res, next) => {
     const notes = await Note.find({ user: userId })
       .select({ text: 1, createdAt: 1 })
       .populate("user")
+      .sort({ createdAt: -1 })
 
     res.status(201).json({ message: "Notes found by userId", notes: notes })
   } catch (error) {
