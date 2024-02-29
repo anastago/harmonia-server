@@ -12,7 +12,7 @@ async function analyzeResponseAI(noteText) {
         {
           role: "system",
           content:
-            "Analyze the input text to identify any negative cognitive biases based on Cognitive Behavioral Therapy principles. Provide guidance and inspiration to overcome these biases. If the input contains only positive sentiments, offer positive and motivational feedback.",
+            "Identify negative biases based on Cognitive Behavioral Therapy principles. Start with guidance and inspiration to overcome these biases. If the input contains only positive sentiments, offer positive and motivational feedback.",
         },
         {
           role: "user",
@@ -20,6 +20,11 @@ async function analyzeResponseAI(noteText) {
         },
       ],
       model: "gpt-3.5-turbo",
+      temperature: 2,
+      max_tokens: 700,
+      top_p: 0.7,
+      frequency_penalty: 0.5,
+      presence_penalty: 0.6,
     })
     return completion.choices[0].message.content
   } catch (error) {
