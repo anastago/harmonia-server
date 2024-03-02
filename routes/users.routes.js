@@ -23,6 +23,14 @@ router.post("/", async (req, res, next) => {
   }
 })
 
+router.get("/me", requireAuth, async (req, res, next) => {
+  try {
+    res.send({ user: req.user })
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.get("/", requireAuth, async (req, res, next) => {
   try {
     const users = await User.find().select({ email: 1 })
