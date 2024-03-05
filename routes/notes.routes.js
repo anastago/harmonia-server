@@ -27,12 +27,12 @@ router.get("/", requireAuth, async (req, res, next) => {
 router.get("/owner", requireAuth, async (req, res, next) => {
   const userId = req.user._id
   try {
-    const notes = await Note.find({ user: userId })
+    const notes = await Note.find({ user: userId, text: { $ne: "" } })
       .select({ text: 1, createdAt: 1 })
       .populate("user")
       .sort({ createdAt: -1 })
 
-    res.status(201).json({ message: "Notes found by userId", notes: notes })
+    res.status(200).json({ message: "Notes found by userId", notes: notes })
   } catch (error) {
     next(error)
   }
@@ -51,7 +51,6 @@ router.get("/:noteId", requireAuth, async (req, res, next) => {
 })
 
 router.put("/:noteId", requireAuth, async (req, res, next) => {
-  // const noteId = req.params.noteId
   const { noteId } = req.params
   const { text } = req.body
   try {

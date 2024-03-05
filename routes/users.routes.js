@@ -9,7 +9,14 @@ router.post("/", async (req, res, next) => {
     const { email, password } = req.body
     const salt = bcrypt.genSaltSync()
     const hashedPassword = bcrypt.hashSync(password, salt)
+
+    const existingUser = await User.findOne({ email })
+    console.log("EXIST ", existingUser)
+    if (existingUser)
+      res.status(409).json({ message: "Email adrress registered already." })
+
     const createdUser = await User.create({ email, password: hashedPassword })
+    console.log(createdUser)
 
     const token = jwt.sign(
       { userId: createdUser._id, email: createdUser.email },

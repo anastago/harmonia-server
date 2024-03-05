@@ -63,12 +63,16 @@ router.put("/", requireAuth, async (req, res, next) => {
   }
 })
 
-router.get("/single", requireAuth, async (req, res, next) => {
+router.get("/", requireAuth, async (req, res, next) => {
   try {
     const { noteId } = req.query
-    const aiResponse = await AIResponse.find({ note: noteId }).select({
-      text: 1,
-    })
+    const aiResponse = await AIResponse.find({ note: noteId })
+      .select({
+        text: 1,
+        createdAt: 1,
+      })
+      .sort({ createdAt: -1 })
+      .limit(1)
 
     res
       .status(200)

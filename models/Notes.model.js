@@ -9,7 +9,6 @@ const noteSchema = new Schema({
     default: Date.now,
     immutable: true,
   },
-
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",

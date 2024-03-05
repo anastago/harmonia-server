@@ -8,6 +8,10 @@ const aiResponseSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Note",
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 })
 
 const AIResponse = model("AIResponse", aiResponseSchema)
