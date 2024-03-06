@@ -74,7 +74,6 @@ router.delete("/:noteId", requireAuth, async (req, res, next) => {
   const noteId = req.params.noteId
   try {
     const deletedNote = await Note.findByIdAndDelete(noteId)
-    await deleteAIResponseForNoteId(noteId)
     res.status(200).json({ message: "Note deleted", data: deletedNote })
   } catch (err) {
     next(err)
