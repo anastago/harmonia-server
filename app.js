@@ -20,11 +20,6 @@ app.use(express.urlencoded({ extends: true }))
 
 app.use("/api", require("./routes/index.routes"))
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Internal Server Error" });
-});
-
 app.listen(process.env.PORT, () => {
   console.log(`Running on : http://localhost:${process.env.PORT}`)
 })
