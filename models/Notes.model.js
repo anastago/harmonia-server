@@ -7,7 +7,6 @@ const noteSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    immutable: true,
   },
   user: {
     type: Schema.Types.ObjectId,

@@ -14,7 +14,7 @@ router.post("/", requireAuth, async (req, res, next) => {
   }
 })
 
-// get (read) all user's notes and sort, newest to oldest
+// get all user's notes and sort, newest to oldest
 router.get("/owner", requireAuth, async (req, res, next) => {
   const userId = req.user._id
   try {
@@ -29,7 +29,7 @@ router.get("/owner", requireAuth, async (req, res, next) => {
   }
 })
 
-// get (read) one note by ID
+// get one note by ID
 router.get("/:noteId", requireAuth, async (req, res, next) => {
   const noteId = req.params.noteId
   try {

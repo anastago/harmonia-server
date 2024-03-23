@@ -32,37 +32,6 @@ router.post("/", requireAuth, async (req, res, next) => {
   }
 })
 
-router.put("/", requireAuth, async (req, res, next) => {
-  try {
-    const { noteId } = req.body
-
-    try {
-      const note = await Note.findById(noteId).select({ text: 1 })
-      if (!note) {
-        return res.status(404).json({ message: "Note not found" })
-      }
-
-      const aiResponseText = await analyzeResponseAI(note.text)
-      const aiResponse = await AIResponse.findOneAndUpdate(
-        { note: noteId },
-        { text: aiResponseText },
-        { new: true }
-      )
-
-      if (!aiResponse) {
-        return res.status(404).json({ message: "AI Response not found" })
-      }
-
-      res.status(201).json({ message: "AI Response updated", data: aiResponse })
-    } catch (error) {
-      console.error("Error updating AI response:", error)
-      res.status(500).json({ message: "Internal server error" })
-    }
-  } catch (err) {
-    next(err)
-  }
-})
-
 router.get("/", requireAuth, async (req, res, next) => {
   try {
     const { noteId } = req.query
